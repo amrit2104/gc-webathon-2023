@@ -7,8 +7,8 @@ MONGO_URI="mongodb+srv://amrit2104:sxwyxb7NMwSBQCC4@cluster0.yzowgze.mongodb.net
 app.use(express.json());
 
 db.connect(MONGO_URI);
-
-
+// testing
+// check
 app.listen(PORT, () => {
     console.log(`server started on port ${PORT}`)
 });
