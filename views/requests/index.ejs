@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate') %>
+
+    <div id="map" style="height: 500px; width: 100%"></div>
+
+    <div class="container">
+        <h1>All Requests</h1>
+        
+        <% let check = 0 %>
+        <% for(let request of requests){ if(currentUser && request.user.equals(currentUser._id)) { %>
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                            <%= request.title %>
+                            </h4>
+                            <p class="card-text">
+                                <%= request.description %>
+                            </p>
+                            <h6 class="card-text">
+                                <small class="text-muted">
+                                    <%= request.location %>
+                                </small>
+                            </h6>
+                                <a class="btn btn-outline-light">Status</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% check = 1 }}%>
+        <% let count = 0 %>
+        <% if(check == 0) { for(let request of requests) { %>
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <%= request.title %>
+                            </h4>
+                            <p class="card-text">
+                                <%= request.description %>
+                            </p>
+                            <h6 class="card-text">
+                                <small class="text-muted">
+                                    <%= request.location %>
+                                </small>
+                            </h6>
+                            <% if(currentUser && request.admin.equals(currentUser._id)) { %> 
+                                <a class="btn btn-primary" href="/requests/<%= request._id %>">Accept</a>
+                                <a class="btn btn-danger" href="/requests/<%= request._id %>">Reject</a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% count = count+1 }}%>
+            <% if(count == 0 && check == 0) %>
+            <div class="alert alert-light" role="alert">
+                <h1 class="text-center"> No Requests </h1>
+            </div>
+    </div>
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        
+    </script>
+        
+    <script src="/javascripts/clusterMap.js"></script>
