@@ -6,13 +6,15 @@
         <h1>All Requests</h1>
 
         <% let check=0 %>
+        <% let count_reqid = 1 %>
             <% for(let request of requests){ if(currentUser && request.user.equals(currentUser._id)) { %>
                 <div class="card mb-3">
                     <div class="row">
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h4 class="card-title">
-                                    Request No. 1
+                                    Request No. <%= count_reqid %>
+                                    <% count_reqid += 1%>
                                 </h4>
                                 <p class="card-text">
                                     <%= request.description %>
@@ -43,14 +45,15 @@
                     </div>
                 </div>
                 <% check=1 }}%>
-                    <% let count=0 %>
+                    <% let count=1 %>
                         <% if(check==0) { for(let request of requests) { %>
                             <div class="card mb-3">
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="card-body">
                                             <h4 class="card-title">
-                                                <%= request.title %>
+                                                Request No. <%= count %>
+                                                <% count += 1 %>
                                             </h4>
                                             <p class="card-text">
                                                 <%= request.description %>
@@ -82,7 +85,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <% count=count+1 }}%>
+                            <% }}%>
                                 <% if(count==0 && check==0) { %>
                                     <div class="alert alert-light" role="alert">
                                         <h1 class="text-center"> No Requests </h1>

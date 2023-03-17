@@ -8,8 +8,8 @@ const {isLoggedIn, validateRequest, isAdmin } = require("../middleware");
 // const upload = multer({ storage });
 
 router.route("/")
-.get(catchAsync(requests.index))
-.post(isLoggedIn ,  catchAsync(requests.createRequest));
+.get(isLoggedIn, catchAsync(requests.index))
+.post(isLoggedIn,  catchAsync(requests.createRequest));
 // , upload.array('image')
 
 router.get("/new", isLoggedIn , requests.renderNewForm);

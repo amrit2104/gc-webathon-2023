@@ -28,7 +28,7 @@ module.exports.isAdmin = async (req, res, next) => {
   // if (!id.equals(req.admin._id)) {
   const request = await Request.findById(id);
   const currUser = res.locals.currentUser._id;
-  console.log(request);
+  // console.log(request);
   const admin = request.admin._id;
   if (currUser && currUser === admin) {
     req.flash("error", "You do  not have permission to do that!");
