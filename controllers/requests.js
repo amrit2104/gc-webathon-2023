@@ -7,7 +7,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 module.exports.index = async (req, res) => {
   const requests = await Request.find({});
-  console.log(requests);
+  // console.log(requests);
   res.render("requests/index", { requests });
 };
 
@@ -25,7 +25,7 @@ module.exports.createRequest = async (req, res, next) => {
   //   filename: f.filename,
   // }));
   request.user = req.user._id;
-  request.admin = ObjectId("641367c0a7208d00e565e4ec");
+  request.admin = ObjectId("6414ad771642e487baf6bad9"); // admin 641367c0a7208d00e565e4ec
   request.status = 2;
   await request.save();
   // console.log(request);
