@@ -25,7 +25,7 @@ const RequestSchema = new Schema(
     destCoordinates: String,
     price: Number,
     description: String,
-    status: Number,//0 for rejected, 1 for accepeted, 2 for pending
+    status: Number,//0 for rejected, 1 for accepted, 2 for pending
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",

@@ -16,14 +16,11 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createRequest = async (req, res, next) => {
-  // if(!req.body.campground) throw new ExpressError('Invalid Campground Data' , 400);
+  
   // console.log(req.body);
   const request = new Request(req.body);
   // console.log(req.body);
-  // campground.images = req.files.map((f) => ({
-  //   url: f.path,
-  //   filename: f.filename,
-  // }));
+  
   request.user = req.user._id;
   request.admin = ObjectId("6414ad771642e487baf6bad9"); // admin 641367c0a7208d00e565e4ec
   request.status = 2;
