@@ -23,12 +23,12 @@ module.exports.isLoggedIn = (req, res, next) => {
 //   }
 // };
 
-module.exports.isAuthor = async (req, res, next) => {
+module.exports.isAdmin = async (req, res, next) => {
   const { id } = req.params;
-  const campground = await Campground.findById(id);
-  if (!campground.author.equals(req.user._id)) {
+  // if (!id.equals(req.admin._id)) {
+    if (currentUser && req.admin.equals(currentUser._id)){
     req.flash("error", "You do  not have permission to do that!");
-    return res.redirect(`/campgrounds/${id}`);
+    return res.redirect('/');
   } else {
     next();
   }

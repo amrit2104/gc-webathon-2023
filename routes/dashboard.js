@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const requests = require("../controllers/requests");
 const catchAsync = require("../utilities/CatchAsync");
-const {isLoggedIn, validateRequest, isAuthor } = require("../middleware");
+const {isLoggedIn, validateRequest, isAdmin } = require("../middleware");
 // const multer = require('multer');
 // const { storage } = require('../cloudinary');
 // const upload = multer({ storage });
@@ -14,8 +14,8 @@ router.route("/")
 
 // router.get("/new", isLoggedIn , campgrounds.renderNewForm);
 
-// router.route('/:id')
-//       .get(catchAsync(campgrounds.showCampground))
+router.route('/:id')
+      .post(isLoggedIn , isAdmin , catchAsync(requests.replyRequest))
 //       .put(isLoggedIn , isAuthor , upload.array('image') , validateCampground ,catchAsync(campgrounds.updateCampground))
 //       .delete((isLoggedIn , isAuthor , catchAsync(campgrounds.deleteCampground)));
 

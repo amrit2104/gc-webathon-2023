@@ -7,6 +7,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 module.exports.index = async (req, res) => {
   const requests = await Request.find({});
+  console.log(requests);
   res.render("requests/index", { requests });
 };
 
@@ -16,7 +17,7 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createRequest = async (req, res, next) => {
   // if(!req.body.campground) throw new ExpressError('Invalid Campground Data' , 400);
-  console.log(req.body);
+  // console.log(req.body);
   const request = new Request(req.body);
   // console.log(req.body);
   // campground.images = req.files.map((f) => ({
@@ -25,10 +26,20 @@ module.exports.createRequest = async (req, res, next) => {
   // }));
   request.user = req.user._id;
   request.admin = ObjectId("641367c0a7208d00e565e4ec");
+  request.status = 2;
   await request.save();
   // console.log(request);
   req.flash("success", "Successfully created a new request");
   res.redirect("/userportal");
+};
+
+module.exports.replyRequest = async (req, res, next) => {
+  const status = req.status;
+  const request = await Request.findById(req.params.id);
+  request.status = status;
+
+  await request.save();
+  res.redirect("/dashboard");
 };
 
 // module.exports.showCampground = async (req, res) => {

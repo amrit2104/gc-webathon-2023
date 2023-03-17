@@ -25,7 +25,19 @@
                                     Destination Coordinates:
                                     <%= request.destCoordinates %>
                             </h6>
-                                <a class="btn btn-outline-light">Status</a>
+                            <% if( request.status == 2){ %>
+                            <div class="alert alert-warning" role="alert">
+                                Status: Pending
+                            </div>
+                            <% } if( request.status == 1) { %>
+                            <div class="alert alert-success" role="alert">
+                                Status: Accepted
+                            </div>
+                            <% } if( request.status == 0) { %>
+                            <div class="alert alert-danger" role="alert">
+                                Status: Rejected
+                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -51,9 +63,17 @@
                                 Destination Coordinates:
                                 <%= request.destCoordinates %>
                             </h6>
-                            <% if(currentUser && request.admin.equals(currentUser._id)) { %> 
-                                <a class="btn btn-primary" href="/requests/<%= request._id %>">Accept</a>
-                                <a class="btn btn-danger" href="/requests/<%= request._id %>">Reject</a>
+                            <% if(currentUser && request.status == 2 && request.admin.equals(currentUser._id)) { %> 
+                                <a class="btn btn-primary" href="/dashboard/<%= request._id %>/?status=1">Accept</a>
+                                <a class="btn btn-danger" href="/dashboard/<%= request._id %>/?status=0">Reject</a>
+                            <% } else if(request.status == 1) { %>
+                                <div class="alert alert-success" role="alert">
+                                    Status: Accepted
+                                </div>
+                            <% } if( request.status == 0) { %>
+                                <div class="alert alert-danger" role="alert">
+                                    Status: Rejected
+                                </div>
                             <% } %>
                         </div>
                     </div>
