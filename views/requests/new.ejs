@@ -96,8 +96,9 @@
             const options = { units: 'miles' };
             destCoordinates = searchResult.coordinates;
             // const distance = turf.distance(startCoordinates,destCoordinates,options);
-            // var value = document.getElementById('map-overlay')
-            // value.innerHTML = "Distance: " + distance.toFixed([2]) + " miles"
+            const distance = calcDistance(startCoordinates, destCoordinates);
+            var value = document.getElementById('map-overlay')
+            value.innerHTML = "Distance: " + distance.toFixed([2]) + " km"
           });
           
           geocoder.on('result', (event) => {
@@ -107,10 +108,28 @@
             const options = { units: 'miles' };
             startCoordinates = searchResult.coordinates;
             // const distance = turf.distance(startCoordinates,destCoordinates,options);
-            // var value = document.getElementById('map-overlay')
-            // value.innerHTML = "Distance: " + distance.toFixed([2]) + " miles"
+            const distance = calcDistance(startCoordinates, destCoordinates);
+            var value = document.getElementById('map-overlay')
+            value.innerHTML = "Distance: " + distance.toFixed([2]) + " km"
           });
         });
+
+        const calcDistance = (start, dest) => {
+            var R = 6371; // Radius of the earth in km
+            var dLat = deg2rad(start[0] - dest[0]);  // deg2rad below
+            var dLon = deg2rad(start[1] - dest[1]); 
+            var a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(deg2rad(start[0])) * Math.cos(deg2rad(dest[0])) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2)
+                ; 
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            var d = R * c; // Distance in km
+            return d;
+        }
+        const deg2rad = (deg) => {
+            return deg * (Math.PI/180)
+        }
         const sendRequest = () => {
             // startCoordinates
             // fetch("", );
