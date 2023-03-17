@@ -1,5 +1,8 @@
 <% layout('layouts/boilerplate') %>
-    <div class="row">
+<div id='map'></div>
+<div id='map-overlay'>Distance: </div>
+<button type="button" onclick=sendRequest() class="btn" style="position: absolute;top: 0;right: 0;margin-right: 100px;margin-top: 300px;background: rgba(255, 255, 255, 0.8);">Submit New Request</button>
+    <!-- <div class="row">
         <h1 class="text-center">New Request</h1>
         <div class="col-md-6 offset-md-3">
             <form action="/userportal" method="POST" novalidate class="validated-form">
@@ -9,22 +12,6 @@
                     <label class="form-label">Destlocation</label>
                     <input class="form-control" type="string" name="destCoordinates" required>
                 </div>
-                <!-- <div class="mb-3">
-                    <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="campground[image]" required>
-                </div> -->
-                <!-- <div class="mb-3">
-                    <label for="image" class="form-label">Upload Images</label>
-                    <input class="form-control" type="file" id="image" name="image" multiple>
-                </div> -->
-                <!-- <div class="mb-3">
-                    <label class="form-label" for="price">Campground Price</label>
-                    <div class="input-group">
-                        <span class="input-group-text" id="price-label">$</span>
-                        <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
-                            aria-describedby="price-label" name="campground[price]" required>
-                    </div>
-                </div> -->
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
                     <textarea class="form-control" type="text" id="description" name="request[description]"
@@ -37,4 +24,106 @@
 
             <a href="/userportal">Back to userportal</a>
         </div>
-    </div>
+    </div> -->
+    <script>
+        startCoordinates = [];
+        destCoordinates = [];
+        mapboxgl.accessToken = 'pk.eyJ1IjoieWFzaDY2MzQiLCJhIjoiY2t2dG0wNzFuMndseTJwa2wzeDZ2Y3luMiJ9.vhp4tKjUd7pNEd2F4geiAA';
+        const map = new mapboxgl.Map({
+          container: 'map', // Container ID
+          style: 'mapbox://styles/mapbox/streets-v12', // Map style to use
+          center: [-122.25948, 37.87221], // Starting position [lng, lat]
+          zoom: 12, // Starting zoom level
+        });
+        
+        const geocoder = new MapboxGeocoder({
+        // Initialize the geocoder
+        accessToken: mapboxgl.accessToken, // Set the access token
+        mapboxgl: mapboxgl, // Set the mapbox-gl instance
+        // marker: false, // Do not use the default marker style
+        placeholder: 'Search for places in Berkeley', // Placeholder text for the search bar
+        bbox: [-122.30937, 37.84214, -122.23715, 37.89838], // Boundary for Berkeley
+        proximity: {
+          longitude: -122.25948,
+          latitude: 37.87221
+        } // Coordinates of UC Berkeley
+      });
+    
+        // Add the geocoder to the map
+        map.addControl(geocoder);
+        const geocoder2 = new MapboxGeocoder({
+        // Initialize the geocoder
+        accessToken: mapboxgl.accessToken, // Set the access token
+        mapboxgl: mapboxgl, // Set the mapbox-gl instance
+        // marker: false, // Do not use the default marker style
+        placeholder: 'Search for places in Berkeley', // Placeholder text for the search bar
+        bbox: [-122.30937, 37.84214, -122.23715, 37.89838], // Boundary for Berkeley
+        proximity: {
+          longitude: -122.25948,
+          latitude: 37.87221
+        } // Coordinates of UC Berkeley
+      });
+    
+        // Add the geocoder to the map
+        map.addControl(geocoder2);
+    
+        // add a source layer and default styling for a single point
+        map.on('load', () => {
+          map.addSource('single-point', {
+            type: 'geojson',
+            data: {
+              type: 'FeatureCollection',
+              features: []
+            }
+          });
+    
+          map.addLayer({
+            id: 'point',
+            source: 'single-point',
+            type: 'circle',
+            paint: {
+              'circle-radius': 10,
+              'circle-color': '#448ee4'
+            }
+          });
+    
+          // Listen for the `result` event from the Geocoder
+          // `result` event is triggered when a user makes a selection
+          //  Add a marker at the result's coordinates
+          geocoder2.on('result', (event) => {
+            map.getSource('single-point').setData(event.result.geometry);
+            const searchResult = event.result.geometry;
+            const options = { units: 'miles' };
+            destCoordinates = searchResult.coordinates;
+            // const distance = turf.distance(startCoordinates,destCoordinates,options);
+            // var value = document.getElementById('map-overlay')
+            // value.innerHTML = "Distance: " + distance.toFixed([2]) + " miles"
+          });
+          
+          geocoder.on('result', (event) => {
+            map.getSource('single-point').setData(event.result.geometry);
+            const searchResult = event.result.geometry;
+            console.log(event.result); 
+            const options = { units: 'miles' };
+            startCoordinates = searchResult.coordinates;
+            // const distance = turf.distance(startCoordinates,destCoordinates,options);
+            // var value = document.getElementById('map-overlay')
+            // value.innerHTML = "Distance: " + distance.toFixed([2]) + " miles"
+          });
+        });
+        const sendRequest = () => {
+            // startCoordinates
+            // fetch("", );
+            const data = {
+                startCoordinates: startCoordinates.toString(),
+                destCoordinates: destCoordinates.toString(),
+            };
+            fetch("/userportal", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            }).then(res => window.location = "/userportal");
+        }
+</script>
