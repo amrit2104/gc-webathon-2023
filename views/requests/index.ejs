@@ -12,15 +12,18 @@
                     <div class="col-md-8">
                         <div class="card-body">
                             <h4 class="card-title">
-                            <%= request.title %>
+                            Request No. 1
                             </h4>
                             <p class="card-text">
                                 <%= request.description %>
                             </p>
                             <h6 class="card-text">
-                                <small class="text-muted">
-                                    <%= request.location %>
-                                </small>
+                                    Start Coordinates:
+                                    <%= request.startCoordinates %>
+                            </h6>
+                            <h6 class="card-text">
+                                    Destination Coordinates:
+                                    <%= request.destCoordinates %>
                             </h6>
                                 <a class="btn btn-outline-light">Status</a>
                         </div>
@@ -41,9 +44,12 @@
                                 <%= request.description %>
                             </p>
                             <h6 class="card-text">
-                                <small class="text-muted">
-                                    <%= request.location %>
-                                </small>
+                                Start Coordinates:
+                                <%= request.startCoordinates %>
+                            </h6>
+                            <h6 class="card-text">
+                                Destination Coordinates:
+                                <%= request.destCoordinates %>
                             </h6>
                             <% if(currentUser && request.admin.equals(currentUser._id)) { %> 
                                 <a class="btn btn-primary" href="/requests/<%= request._id %>">Accept</a>
@@ -54,10 +60,11 @@
                 </div>
             </div>
             <% count = count+1 }}%>
-            <% if(count == 0 && check == 0) %>
+            <% if(count == 0 && check == 0) { %>
             <div class="alert alert-light" role="alert">
                 <h1 class="text-center"> No Requests </h1>
             </div>
+            <% } %>
     </div>
     <script>
         const mapToken = '<%-process.env.MAPBOX_TOKEN%>';

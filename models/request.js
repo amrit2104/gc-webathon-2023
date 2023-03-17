@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 // const Review = require('./review');
 const Schema = mongoose.Schema;
-const User = require('./user');
+const User = require("./user");
 
 // const ImageSchema = new Schema({
 //     url: String,
@@ -18,31 +18,27 @@ const User = require('./user');
 
 const opts = { toJSON: { virtuals: true } };
 
-const RequestSchema = new Schema({
-    title : String,
-    startCoordinates: {
-            type: [Number],
-            required: true
-        },
-    destCoordinates: {
-            type: [Number],
-            required: true
-        },
-    price : Number,
-    description : String,
-    location : String,
-    user : {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+const RequestSchema = new Schema(
+  {
+    title: String,
+    startCoordinates: String,
+    destCoordinates: String,
+    price: Number,
+    description: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
-    admin : {
-        type: Schema.Types.ObjectId,
-        ref: 'Admin'
+    admin: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
     },
-}, opts);
+  },
+  opts
+);
 
-RequestSchema.virtual('properties.popUpMarkup').get(function () {
-    return `<strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>`;
+RequestSchema.virtual("properties.popUpMarkup").get(function () {
+  return `<strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>`;
 });
 
 // RequestSchema.post('findOneAndDelete',async function (campground) {
@@ -51,4 +47,4 @@ RequestSchema.virtual('properties.popUpMarkup').get(function () {
 //     }
 // });
 
-module.exports = mongoose.model('Request' , RequestSchema);
+module.exports = mongoose.model("Request", RequestSchema);

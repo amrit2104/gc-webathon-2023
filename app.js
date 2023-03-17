@@ -1,5 +1,5 @@
-if(process.env.NODE_ENV !== "production"){
-  require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
 const express = require("express");
@@ -13,11 +13,11 @@ const ExpressError = require("./utilities/ExpressError");
 const catchAsync = require("./utilities/CatchAsync");
 const methodOverride = require("method-override");
 const passport = require("passport");
-const LocalStrategy = require('passport-local');
-const User = require('./models/user');
+const LocalStrategy = require("passport-local");
+const User = require("./models/user");
 const helmet = require("helmet");
-const mongoSanitize = require('express-mongo-sanitize');
-const userRoutes = require('./routes/user');
+const mongoSanitize = require("express-mongo-sanitize");
+const userRoutes = require("./routes/user");
 const dashboardRoutes = require("./routes/dashboard");
 const userportalRoutes = require("./routes/userportal");
 // const reviewRoutes = require("./routes/reviews");
@@ -31,7 +31,7 @@ let dbUrl;
 //   dbUrl = process.env.DB_URL;
 // }
 
-dbUrl = 'mongodb://localhost:27017/gc-webathon-ee2023';
+dbUrl = "mongodb://localhost:27017/gc-webathon-ee2023";
 // const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 mongoose.connect(dbUrl);
 // dbUrl = "mongodb+srv://amrit2104:sxwyxb7NMwSBQCC4@cluster0.yzowgze.mongodb.net/?retryWrites=true&w=majority"
@@ -47,26 +47,27 @@ app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
 
-const secret = process.env.SECRET || "thisshouldbeabettersecret!" ;
+const secret = process.env.SECRET || "thisshouldbeabettersecret!";
 
 const store = new MongoDBStore({
-    url: dbUrl,
-    secret,
-    touchAfter: 24 * 60 * 60
-})
+  url: dbUrl,
+  secret,
+  touchAfter: 24 * 60 * 60,
+});
 
-store.on("error",function(e) {
-  console.log("Session Store error",e)
-})
+store.on("error", function (e) {
+  console.log("Session Store error", e);
+});
 
 const sessionConfig = {
   store,
-  name: 'session',
+  name: "session",
   secret,
   resave: false,
   saveUninitialized: true,
@@ -107,25 +108,24 @@ const connectSrcUrls = [
 const fontSrcUrls = [];
 app.use(
   helmet.contentSecurityPolicy({
-      directives: {
-          defaultSrc: [],
-          connectSrc: ["'self'", ...connectSrcUrls],
-          scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-          styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-          workerSrc: ["'self'", "blob:"],
-          objectSrc: [],
-          imgSrc: [
-              "'self'",
-              "blob:",
-              "data:",
-              "https://res.cloudinary.com/dfxrae3d5/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
-              "https://images.unsplash.com/",
-          ],
-          fontSrc: ["'self'", ...fontSrcUrls],
-      },
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", "blob:"],
+      objectSrc: [],
+      imgSrc: [
+        "'self'",
+        "blob:",
+        "data:",
+        "https://res.cloudinary.com/dfxrae3d5/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
+        "https://images.unsplash.com/",
+      ],
+      fontSrc: ["'self'", ...fontSrcUrls],
+    },
   })
 );
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -145,8 +145,7 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-
-app.use('/',userRoutes);
+app.use("/", userRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/userportal", userportalRoutes);
 // app.use("/campgrounds/:id/reviews", reviewRoutes);

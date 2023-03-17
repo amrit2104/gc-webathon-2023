@@ -9,6 +9,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     req.flash("error", "you must be signed in");
     return res.redirect("/login");
   }
+  // console.log(req.body);
   next();
 };
 
