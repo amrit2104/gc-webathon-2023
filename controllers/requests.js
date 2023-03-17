@@ -34,7 +34,7 @@ module.exports.createRequest = async (req, res, next) => {
 };
 
 module.exports.replyRequest = async (req, res, next) => {
-  const status = req.status;
+  const status = req.query.status;
   const request = await Request.findById(req.params.id);
   request.status = status;
 
