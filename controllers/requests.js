@@ -42,51 +42,6 @@ module.exports.replyRequest = async (req, res, next) => {
   res.redirect("/dashboard");
 };
 
-// module.exports.showCampground = async (req, res) => {
-//   const campground = await Request.findById(req.params.id)
-//     .populate({
-//       path: "reviews",
-//       populate: {
-//         path: "author",
-//       },
-//     })
-//     .populate("author");
-//   if (!campground) {
-//     req.flash("error", "Cannot find that campground");
-//     return res.redirect("/campgrounds");
-//   }
-//   res.render("campgrounds/show", { campground });
-// };
-
-// module.exports.renderEditForm = async (req, res) => {
-//   const campground = await Request.findById(req.params.id);
-//   if (!campground) {
-//     req.flash("error", "Cannot find that campground");
-//     return res.redirect("/campgrounds");
-//   }
-//   res.render("campgrounds/edit", { campground });
-// };
-
-// module.exports.updateCampground = async (req, res) => {
-//   const { id } = req.params;
-//   const campground = await Request.findByIdAndUpdate(req.params.id, {
-//     ...req.body.campground,
-//   });
-//   const imgs = req.files.map((f) => ({ url: f.path, filename: f.filename }));
-//   campground.images.push(...imgs);
-//   await campground.save();
-//   if (req.body.deleteImages) {
-//     for (let imgFilename of req.body.deleteImages) {
-//       await cloudinary.uploader.destroy(imgFilename);
-//     }
-//     await campground.updateOne({
-//       $pull: { images: { filename: { $in: req.body.deleteImages } } },
-//     });
-//   }
-//   req.flash("success", "Successfully updated a campground");
-//   res.redirect(`/campgrounds/${campground._id}`);
-// };
-
 module.exports.deleteRequest = async (req, res) => {
   await Request.findByIdAndDelete(req.params.id);
   req.flash("success", "Successfully deleted a request");
