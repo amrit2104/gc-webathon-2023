@@ -42,10 +42,4 @@ RequestSchema.virtual("properties.popUpMarkup").get(function () {
   return `<strong><a href="/campgrounds/${this._id}">${this.title}</a></strong>`;
 });
 
-// RequestSchema.post('findOneAndDelete',async function (campground) {
-//     if(campground.reviews.length){
-//         await Reviews.deleteMany({ id: {$in: campground.reviews}})
-//     }
-// });
-
 module.exports = mongoose.model("Request", RequestSchema);
