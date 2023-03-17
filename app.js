@@ -123,6 +123,7 @@ app.use(
         "data:",
         "https://res.cloudinary.com/dfxrae3d5/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
         "https://images.unsplash.com/",
+        "https://www.nutanix.com/content/dam/nutanix-newsroom/why-drone-delivery-is-destined-to-make-a-difference/img-drone-delivery-droneports-feature.jpeg",
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
     },
@@ -150,7 +151,6 @@ app.get("/", (req, res) => {
 app.use("/", userRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/userportal", userportalRoutes);
-// app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 400));
