@@ -31,10 +31,10 @@ let dbUrl;
 //   dbUrl = process.env.DB_URL;
 // }
 
-dbUrl = "mongodb://localhost:27017/gc-webathon-ee2023";
+// dbUrl = "mongodb://localhost:27017/gc-webathon-ee2023";
 // const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
+dbUrl = "mongodb+srv://amrit2104:sxwyxb7NMwSBQCC4@cluster0.yzowgze.mongodb.net/?retryWrites=true&w=majority"
 mongoose.connect(dbUrl);
-// dbUrl = "mongodb+srv://amrit2104:sxwyxb7NMwSBQCC4@cluster0.yzowgze.mongodb.net/?retryWrites=true&w=majority"
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
