@@ -4,91 +4,94 @@
 
     <div class="container">
         <h1>All Requests</h1>
-        
-        <% let check = 0 %>
-        <% for(let request of requests){ if(currentUser && request.user.equals(currentUser._id)) { %>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h4 class="card-title">
-                            Request No. 1
-                            </h4>
-                            <p class="card-text">
-                                <%= request.description %>
-                            </p>
-                            <h6 class="card-text">
+
+        <% let check=0 %>
+            <% for(let request of requests){ if(currentUser && request.user.equals(currentUser._id)) { %>
+                <div class="card mb-3">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    Request No. 1
+                                </h4>
+                                <p class="card-text">
+                                    <%= request.description %>
+                                </p>
+                                <h6 class="card-text">
                                     Start Coordinates:
                                     <%= request.startCoordinates %>
-                            </h6>
-                            <h6 class="card-text">
+                                </h6>
+                                <h6 class="card-text">
                                     Destination Coordinates:
                                     <%= request.destCoordinates %>
-                            </h6>
-                            <% if( request.status == 2){ %>
-                            <div class="alert alert-warning" role="alert">
-                                Status: Pending
+                                </h6>
+                                <% if( request.status==2){ %>
+                                    <div class="alert alert-warning" role="alert">
+                                        Status: Pending
+                                    </div>
+                                    <% } if( request.status==1) { %>
+                                        <div class="alert alert-success" role="alert">
+                                            Status: Accepted
+                                        </div>
+                                        <% } if( request.status==0) { %>
+                                            <div class="alert alert-danger" role="alert">
+                                                Status: Rejected
+                                            </div>
+                                            <% } %>
                             </div>
-                            <% } if( request.status == 1) { %>
-                            <div class="alert alert-success" role="alert">
-                                Status: Accepted
-                            </div>
-                            <% } if( request.status == 0) { %>
-                            <div class="alert alert-danger" role="alert">
-                                Status: Rejected
-                            </div>
-                            <% } %>
                         </div>
                     </div>
                 </div>
-            </div>
-            <% check = 1 }}%>
-        <% let count = 0 %>
-        <% if(check == 0) { for(let request of requests) { %>
-            <div class="card mb-3">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h4 class="card-title">
-                                <%= request.title %>
-                            </h4>
-                            <p class="card-text">
-                                <%= request.description %>
-                            </p>
-                            <h6 class="card-text">
-                                Start Coordinates:
-                                <%= request.startCoordinates %>
-                            </h6>
-                            <h6 class="card-text">
-                                Destination Coordinates:
-                                <%= request.destCoordinates %>
-                            </h6>
-                            <% if(currentUser && request.status == 2 && request.admin.equals(currentUser._id)) { %> 
-                                <a class="btn btn-primary" href="/dashboard/<%= request._id %>/?status=1">Accept</a>
-                                <a class="btn btn-danger" href="/dashboard/<%= request._id %>/?status=0">Reject</a>
-                            <% } else if(request.status == 1) { %>
-                                <div class="alert alert-success" role="alert">
-                                    Status: Accepted
+                <% check=1 }}%>
+                    <% let count=0 %>
+                        <% if(check==0) { for(let request of requests) { %>
+                            <div class="card mb-3">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h4 class="card-title">
+                                                <%= request.title %>
+                                            </h4>
+                                            <p class="card-text">
+                                                <%= request.description %>
+                                            </p>
+                                            <h6 class="card-text">
+                                                Start Coordinates:
+                                                <%= request.startCoordinates %>
+                                            </h6>
+                                            <h6 class="card-text">
+                                                Destination Coordinates:
+                                                <%= request.destCoordinates %>
+                                            </h6>
+                                            <% if(currentUser && request.status==2 &&
+                                                request.admin.equals(currentUser._id)) { %>
+                                                <a class="btn btn-primary"
+                                                    href="/dashboard/<%= request._id %>/?status=1">Accept</a>
+                                                <a class="btn btn-danger"
+                                                    href="/dashboard/<%= request._id %>/?status=0">Reject</a>
+                                                <% } else if(request.status==1) { %>
+                                                    <div class="alert alert-success" role="alert">
+                                                        Status: Accepted
+                                                    </div>
+                                                    <% } if( request.status==0) { %>
+                                                        <div class="alert alert-danger" role="alert">
+                                                            Status: Rejected
+                                                        </div>
+                                                        <% } %>
+                                        </div>
+                                    </div>
                                 </div>
-                            <% } if( request.status == 0) { %>
-                                <div class="alert alert-danger" role="alert">
-                                    Status: Rejected
-                                </div>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <% count = count+1 }}%>
-            <% if(count == 0 && check == 0) { %>
-            <div class="alert alert-light" role="alert">
-                <h1 class="text-center"> No Requests </h1>
-            </div>
-            <% } %>
+                            </div>
+                            <% count=count+1 }}%>
+                                <% if(count==0 && check==0) { %>
+                                    <div class="alert alert-light" role="alert">
+                                        <h1 class="text-center"> No Requests </h1>
+                                    </div>
+                                    <% } %>
     </div>
     <script>
         const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-        
+
     </script>
-        
+
     <script src="/javascripts/clusterMap.js"></script>

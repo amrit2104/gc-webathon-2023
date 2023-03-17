@@ -1,6 +1,6 @@
-const {requestSchema, reviewSchema } = require("./errorSchema/schemas");
+const { requestSchema, reviewSchema } = require("./errorSchema/schemas");
 const ExpressError = require("./utilities/ExpressError");
-const Campground = require("./models/request");
+const Request = require("./models/request");
 const Review = require("./models/review");
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -26,9 +26,13 @@ module.exports.isLoggedIn = (req, res, next) => {
 module.exports.isAdmin = async (req, res, next) => {
   const { id } = req.params;
   // if (!id.equals(req.admin._id)) {
-    if (currentUser && req.admin.equals(currentUser._id)){
+  const request = await Request.findById(id);
+  const currUser = res.locals.currentUser._id;
+  console.log(request);
+  const admin = request.admin._id;
+  if (currUser && currUser === admin) {
     req.flash("error", "You do  not have permission to do that!");
-    return res.redirect('/');
+    return res.redirect("/dashboard");
   } else {
     next();
   }

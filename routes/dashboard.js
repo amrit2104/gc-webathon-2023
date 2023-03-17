@@ -8,14 +8,14 @@ const {isLoggedIn, validateRequest, isAdmin } = require("../middleware");
 // const upload = multer({ storage });
 
 router.route("/")
-.get(catchAsync(requests.index));
+.get(isLoggedIn, catchAsync(requests.index));
 // .post(isLoggedIn  , validateCampground ,  catchAsync(campgrounds.createCampground));
 // , upload.array('image')
 
 // router.get("/new", isLoggedIn , campgrounds.renderNewForm);
 
 router.route('/:id')
-      .post(isLoggedIn , isAdmin , catchAsync(requests.replyRequest))
+      .get(isLoggedIn , isAdmin , catchAsync(requests.replyRequest))
 //       .put(isLoggedIn , isAuthor , upload.array('image') , validateCampground ,catchAsync(campgrounds.updateCampground))
 //       .delete((isLoggedIn , isAuthor , catchAsync(campgrounds.deleteCampground)));
 
