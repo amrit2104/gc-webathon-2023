@@ -1,13 +1,13 @@
 
 # Dronelivery
 
-This is a web application created for delivery of products using drones as a part of GC webathon'23. This web application is able to request drone pickups their deliveries in real-time. 
+This is a responsive web application created for delivery of products using drones as a part of GC webathon'23. This web application is able to request drone pickups their deliveries in real-time. 
 
 The user can choose start and end locations using a map. Corresponding to that the locations get converted to coordinates and  distance is also calculated. 
 
 The application has provided admin with a user-friendly interface to manage and track all delivery requests and ensure timely delivery of packages. Both user and admin are also able to track their history(i.e. package history for user and request history for admin).
 
-Please note that this webapp is deployed in institute network using Rasberry pi accessible by the following IP address: [10.10.4.96:8000](http://10.10.4.96:8000/)
+Please note that this responsive webapp is deployed in institute network using Rasberry pi accessible by the following IP address: [10.10.4.96:8000](http://10.10.4.96:8000/)
 
 
 ## Prerequisites and Technologies Used
