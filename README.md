@@ -7,6 +7,8 @@ The user can choose start and end locations using a map. Corresponding to that t
 
 The application has provided admin with a user-friendly interface to manage and track all delivery requests and ensure timely delivery of packages. Both user and admin are also able to track their history(i.e. package history for user and request history for admin).
 
+Please note that this webapp is deployed in institute network using Rasberry pi accessible by the following IP address: [10.10.4.96:8000](http://10.10.4.96:8000/)
+
 
 ## Prerequisites and Technologies Used
 
