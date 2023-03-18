@@ -21,6 +21,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/user");
 const dashboardRoutes = require("./routes/dashboard");
 const userportalRoutes = require("./routes/userportal");
+const socket = require('socket.io');
 // const reviewRoutes = require("./routes/reviews");
 
 const MongoDBStore = require("connect-mongo")(session);
@@ -54,6 +55,27 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize());
+
+app.use(express.static('public'));
+
+// dummy drone activation
+app.get('/drone1',(req,res)=>{
+  res.sendFile(__dirname+'/drone1.html')
+})
+app.get('/drone2',(req,res)=>{
+  res.sendFile(__dirname+'/drone2.html')
+})
+app.get('/drone3',(req,res)=>{
+  res.sendFile(__dirname+'/drone3.html')
+})
+app.get('/drone4',(req,res)=>{
+  res.sendFile(__dirname+'/drone4.html')
+})
+app.get('/drone5',(req,res)=>{
+  res.sendFile(__dirname+'/drone5.html')
+})
+
+
 
 const secret = process.env.SECRET || "thisshouldbeabettersecret!";
 
@@ -123,7 +145,6 @@ app.use(
         "data:",
         "https://res.cloudinary.com/dfxrae3d5/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT!
         "https://images.unsplash.com/",
-        "https://www.nutanix.com/content/dam/nutanix-newsroom/why-drone-delivery-is-destined-to-make-a-difference/img-drone-delivery-droneports-feature.jpeg",
       ],
       fontSrc: ["'self'", ...fontSrcUrls],
     },
@@ -148,9 +169,23 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
+// tracking
+app.get('/track/admin',(req,res)=>{
+  res.render('trackAdmin',{uid: "6414ad771642e487baf6bad9"})
+})
+
+
+app.get('/track',(req,res)=>{
+  res.render('track',{uid: '6414c0a2b5c4b9206dd43375'})
+})
+
+
+
+
 app.use("/", userRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/userportal", userportalRoutes);
+// app.use("/campgrounds/:id/reviews", reviewRoutes);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError("Page Not Found", 400));
@@ -163,6 +198,67 @@ app.use((err, req, res, next) => {
 });
 
 const port = process.env.PORT || 8000;
-app.listen(port, () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const server = app.listen(port, () => {
   console.log(`Serving on port ${port}`);
 });
+
+
+
+const io = socket(server);
+
+// DUMMY DATABASE VALUES droneid -> userid
+const DRONES = new Map([
+    [1,'6414c0cfb5c4b9206dd43381'],[2,'6414c0a2b5c4b9206dd43375'],
+    [3,'6414c0fab5c4b9206dd43389'],[4,'6414c0fab5c4b9206dd43389'],[5,'6414c0a2b5c4b9206dd43375']
+]);
+
+const drones = new Map();
+// online user -> socket id
+const users = new Map();
+
+
+
+
+
+
+
+
+io.on('connection',(socket)=>{
+    socket.on('group',(data)=>{
+        if(data.grp == 'drone'){
+            drones.set(data.id, DRONES.get(data.id))
+        }
+        else if(data.grp == 'user'){
+            users.set(data.id, socket.id)
+        }
+    })
+
+    
+    socket.on('pos',(data)=>{
+        let userid = drones.get(data.id);
+        // send position of drone to admin. (drone id, position)
+        io.to(users.get("6414ad771642e487baf6bad9")).emit('newpos',data)
+
+        if(users.get(userid)){
+            io.to(users.get(userid)).emit('newpos',data)
+        }
+    });
+
+});
+
