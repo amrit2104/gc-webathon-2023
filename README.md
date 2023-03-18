@@ -1,5 +1,5 @@
 
-# Dronalivery
+# Dronelivery
 
 This is a web application created for delivery of products using drones as a part of GC webathon'23. This web application is able to request drone pickups their deliveries in real-time. 
 
