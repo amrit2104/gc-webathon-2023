@@ -14,7 +14,7 @@ The application has provided admin with a user-friendly interface to manage and 
 ### Installations Required:
 npm install : run this command to install all dependencies which is stored in my package.json
 
-nodeman app.js / node app.js / npm start: to run the webapp locally.
+nodemon app.js / node app.js / npm start: to run the webapp locally.
 
 ### Technology Used :    
 Frontend : EJS, CSS, BootStrap, Javascript   
@@ -24,7 +24,7 @@ Database : Atlas MongoDB
 ### Dependencies & APIs used:
 @mapbox/mapbox-sdk : api used for requesting and tracking order using maps.      
 
-connect-flash : it is a special area of the session used for storing messages. Messages are written to the flash and cleared after being displayed to the user.         
+connect-flash : it is a special area of the session used for storing messages. Messages are written to the flash and cleared after being displayed to the user.       
 
 dotenv : to store the environment variables.        
 
